@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "@arcgis/core/assets/esri/themes/light/main.css";
 import MapView from "@arcgis/core/views/MapView";
 import Map from "@arcgis/core/Map";
@@ -27,6 +27,11 @@ const ChroroplethMap = ({
 }: ChroroplethMapProps) => {
   const mapDiv = useRef<HTMLDivElement | null>(null);
   const legendDiv = useRef<HTMLDivElement | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const query = new Query({
     where: "1=1",
@@ -159,7 +164,7 @@ const ChroroplethMap = ({
 
   useEffect(() => {
     const initMap = async () => {
-      if (!mapDiv.current) return;
+      if (!isClient || !mapDiv.current) return;
 
       const countiesLayer = new FeatureLayer({
         url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_Counties/FeatureServer/0",
@@ -193,7 +198,7 @@ const ChroroplethMap = ({
 
     initMap();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isClient]);
 
   return (
     <div style={{ width: "100%", height: "100vh", position: "relative" }}>

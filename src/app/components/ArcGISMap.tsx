@@ -1,6 +1,6 @@
 "use client";
 // components/Map.js
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "@arcgis/core/assets/esri/themes/light/main.css";
 import MapView from "@arcgis/core/views/MapView";
 import Map from "@arcgis/core/Map";
@@ -18,9 +18,14 @@ interface ArcGISMapProps {
 
 const ArcGISMap = ({ setAttributes }: ArcGISMapProps) => {
   const mapDiv = useRef(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    if (mapDiv.current) {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient && mapDiv.current) {
       const map = new Map({
         basemap: "streets-navigation-vector",
       });
@@ -92,7 +97,7 @@ const ArcGISMap = ({ setAttributes }: ArcGISMapProps) => {
 
       view.ui.add(legend, "bottom-right");
     }
-  }, [setAttributes]);
+  }, [setAttributes, isClient]);
 
   return <div style={{ width: "100%", height: "100vh" }} ref={mapDiv}></div>;
 };
