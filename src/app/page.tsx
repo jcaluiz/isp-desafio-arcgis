@@ -4,7 +4,9 @@ import dynamic from "next/dynamic";
 import { Select, SelectItem } from "@nextui-org/select";
 import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import ChroroplethMap from "./components/ChroroplethMap";
+const ChroroplethMap = dynamic(() => import("./components/ChroroplethMap"), {
+  ssr: false,
+});
 
 const MapComponent = dynamic(() => import("./components/ArcGISMap"), {
   ssr: false,
